@@ -6,6 +6,7 @@ import java.util.List;
 import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 import com.motorph.service.EmployeeService;
+import com.motorph.service.EmployeeServiceInterface;
 
 /**
  * Controller for employee-related operations.
@@ -13,7 +14,9 @@ import com.motorph.service.EmployeeService;
  */
 public class EmployeeController {
     private final EmployeeService employeeService;
-
+    // ABSTRACTION: Controller depends on the interface, not the concrete class
+    private final EmployeeServiceInterface employeeService;
+    
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
