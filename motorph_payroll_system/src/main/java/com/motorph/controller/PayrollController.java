@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.motorph.model.PaySlip;
 import com.motorph.service.PayrollService;
+import com.motorph.service.PayrollServiceInterface;
 
 /**
  * Controller for payroll-related operations.
@@ -14,6 +15,10 @@ public class PayrollController {
     private final PayrollService payrollService;
     
     public PayrollController(PayrollService payrollService) {
+    // ABSTRACTION: Controller depends on the interface, not the conrete class
+    private final PayrollServiceInterface payrollService;
+
+    public PayrollController(PayrollServiceInterface payrollService) {
         this.payrollService = payrollService;
     }
     
