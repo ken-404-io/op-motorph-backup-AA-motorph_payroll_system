@@ -24,24 +24,12 @@ import com.motorph.util.AppUtils;
 import com.motorph.view.Login;
 import com.motorph.view.MainFrame;
 
-/**
- * Entry point for the MotorPH Payroll System application.
- * This class is responsible for initializing the application components
- * and starting the user interface.
- */
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
-    /**
-     * Main entry point for the application
-     * 
-     * @param args Command line arguments (not used)
-     */
     public static void main(String[] args) {
         try {
-            // Set the look and feel to the system look and feel
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); // Initialize and start the application
-                                                                                 // on the Event Dispatch Thread
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.invokeLater(() -> {
                 try {
                     showLoginScreen();
@@ -52,7 +40,7 @@ public class Main {
             });
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException
                 | IllegalAccessException e) {
-            logger.log(Level.WARNING, "Failed to set system look and feel", e); // Continue with default look and feel
+            logger.log(Level.WARNING, "Failed to set system look and feel", e);
             SwingUtilities.invokeLater(() -> {
                 try {
                     showLoginScreen();
@@ -64,13 +52,8 @@ public class Main {
         }
     }
 
-    /**
-     * Initialize a default session for bypassed login
-     * This allows the dashboard to display user information during testing
-     */
     private static void initializeDefaultSession() {
         try {
-            // Create a default admin user for testing
             com.motorph.model.User defaultUser = new com.motorph.model.User("admin", "password", 1, "ADMIN", true);
             AppUtils.setCurrentUser(defaultUser);
             logger.log(Level.INFO, "Default session initialized for user: {0}", defaultUser.getUsername());
@@ -79,18 +62,10 @@ public class Main {
         }
     }
 
-    /**
-     * Show the login screen
-     */
     private static void showLoginScreen() {
         showLoginScreen(null);
     }
 
-    /**
-     * Show the login screen with a callback for successful login
-     * 
-     * @param onLoginSuccess Callback to run after successful login
-     */
     public static void showLoginScreen(Runnable onLoginSuccess) {
         logger.log(Level.INFO, "Starting MotorPH Payroll System with login screen");
 
@@ -110,22 +85,15 @@ public class Main {
         loginFrame.showLogin();
     }
 
-    /**
-     * Initialize the application components and start the UI
-     * 
-     * @throws IOException If there's an error loading data
-     */
     public static void initializeApplication() throws IOException {
-        // Log working directory and file paths for debugging
         String workingDir = System.getProperty("user.dir");
         String employeesFilePath = AppConstants.getEmployeeFilePath();
         String attendanceFilePath = AppConstants.getAttendanceFilePath();
-        
+
         logger.log(Level.INFO, "Working directory: {0}", workingDir);
         logger.log(Level.INFO, "Looking for employee file: {0}", employeesFilePath);
         logger.log(Level.INFO, "Looking for attendance file: {0}", attendanceFilePath);
 
-        // Check if files exist and log their status
         java.io.File employeeFile = new java.io.File(employeesFilePath);
         java.io.File attendanceFile = new java.io.File(attendanceFilePath);
 
@@ -134,26 +102,21 @@ public class Main {
         logger.log(Level.INFO, "Attendance file exists: {0} at {1}",
                 new Object[] { attendanceFile.exists(), attendanceFile.getAbsolutePath() });
 
-        // Initialize the data repository
         DataRepository dataRepository = new DataRepository(employeesFilePath, attendanceFilePath);
 
-        // Get employees and attendance records
         List<Employee> employees = dataRepository.getAllEmployees();
-        
-        // Log employee count for confirmation
+
         logger.log(Level.INFO, "Successfully loaded {0} employees from CSV", employees.size());
         List<AttendanceRecord> attendanceRecords = dataRepository.getAllAttendanceRecords();
 
-        // Initialize the payroll calculator
-        PayrollProcessor payrollCalculator = new PayrollProcessor();        // Initialize services
+        PayrollProcessor payrollCalculator = new PayrollProcessor();
         EmployeeService employeeService = new EmployeeService(employees, attendanceRecords, employeesFilePath);
         PayrollService payrollService = new PayrollService(employees, attendanceRecords, payrollCalculator);
         ReportService reportService = new ReportService(employeeService, payrollService);
 
-        // Initialize controllers
         EmployeeController employeeController = new EmployeeController(employeeService);
         PayrollController payrollController = new PayrollController(payrollService);
-        ReportController reportController = new ReportController(reportService); // Initialize and show the main frame
+        ReportController reportController = new ReportController(reportService);
         MainFrame mainFrame = new MainFrame(employeeController, payrollController, reportController);
         mainFrame.setVisible(true);
 

@@ -23,13 +23,6 @@ import org.apache.commons.csv.CSVRecord;
 import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 
-/**
- * Consolidated repository for loading and accessing employee and attendance
- * data.
- * This class combines functionality from CSVLoader, CSVRepository,
- * EmployeeRepository,
- * and AttendanceRepository to reduce redundancy.
- */
 public class DataRepository {
     private static final Logger logger = Logger.getLogger(DataRepository.class.getName());
 
@@ -51,8 +44,8 @@ public class DataRepository {
             DateTimeFormatter.ofPattern("H:mm"),
             DateTimeFormatter.ofPattern("HH:mm:ss"),
             DateTimeFormatter.ofPattern("h:mm a"),
-            DateTimeFormatter.ofPattern("h:mm"), // Format seen in data: e.g., "8:59"
-            DateTimeFormatter.ofPattern("H:mm") // Single digit hour format
+            DateTimeFormatter.ofPattern("h:mm"),
+            DateTimeFormatter.ofPattern("H:mm")
     };
 
     static {
@@ -72,11 +65,6 @@ public class DataRepository {
         logger.info("DataRepository initialized");
     }
 
-    /**
-     * Get all employees, loading them if necessary
-     * 
-     * @return List of employees
-     */
     public List<Employee> getAllEmployees() {
         if (employees == null) {
             try {
@@ -89,12 +77,6 @@ public class DataRepository {
         return employees;
     }
 
-    /**
-     * Find an employee by ID
-     * 
-     * @param employeeId The employee ID to find
-     * @return Employee or null if not found
-     */
     public Employee findEmployeeById(int employeeId) {
         return getAllEmployees().stream()
                 .filter(emp -> emp.getEmployeeId() == employeeId)
@@ -102,12 +84,6 @@ public class DataRepository {
                 .orElse(null);
     }
 
-    /**
-     * Search for employees by name or ID
-     * 
-     * @param searchTerm The search term (name or ID)
-     * @return List of matching employees
-     */
     public List<Employee> searchEmployees(String searchTerm) {
         String term = searchTerm.toLowerCase();
 
@@ -126,11 +102,6 @@ public class DataRepository {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get all attendance records, loading them if necessary
-     * 
-     * @return List of attendance records
-     */
     public List<AttendanceRecord> getAllAttendanceRecords() {
         if (attendanceRecords == null) {
             try {
@@ -143,26 +114,12 @@ public class DataRepository {
         return attendanceRecords;
     }
 
-    /**
-     * Get attendance records for a specific employee
-     * 
-     * @param employeeId The employee ID
-     * @return List of attendance records
-     */
     public List<AttendanceRecord> getAttendanceRecords(int employeeId) {
         return getAllAttendanceRecords().stream()
                 .filter(record -> record.getEmployeeId() == employeeId)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get attendance records for a specific employee and date range
-     * 
-     * @param employeeId The employee ID
-     * @param startDate  Start date for the range
-     * @param endDate    End date for the range
-     * @return List of attendance records
-     */
     public List<AttendanceRecord> getAttendanceRecords(int employeeId, LocalDate startDate, LocalDate endDate) {
         return getAllAttendanceRecords().stream()
                 .filter(record -> record.getEmployeeId() == employeeId)
@@ -174,11 +131,6 @@ public class DataRepository {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Loads employee data from a CSV file
-     * 
-     * @throws IOException if the file cannot be read
-     */
     private void loadEmployees() throws IOException {
         List<Employee> loadedEmployees = new ArrayList<>();
         logger.log(Level.INFO, "Loading employees from: {0}", employeesFilePath);
@@ -211,7 +163,6 @@ public class DataRepository {
             logger.log(Level.INFO, "Successfully loaded {0} of {1} employee records",
                     new Object[] { successfulRecords, totalRecords });
 
-            // Debug log for employee 10001
             for (Employee emp : loadedEmployees) {
                 if (emp.getEmployeeId() == 10001) {
                     logger.log(Level.INFO,
@@ -237,7 +188,6 @@ public class DataRepository {
             String lastName = record.get(1);
             String firstName = record.get(2);
 
-            // Parse birthday with flexible date format
             LocalDate birthday = null;
             if (!record.get(3).isEmpty()) {
                 birthday = parseFlexibleDate(record.get(3));
@@ -259,7 +209,6 @@ public class DataRepository {
             double clothingAllowance = parseAmount(record.get(16));
             double grossSemiMonthlyRate = parseAmount(record.get(17));
 
-            // Use the full constructor to include all employee details
             return new RegularEmployee(
                     id, lastName, firstName, birthday, address, phoneNumber,
                     sssNumber, philhealthNumber, tinNumber, pagibigNumber,
@@ -271,8 +220,6 @@ public class DataRepository {
     }
 
     private void loadSampleEmployees(List<Employee> employees) {
-        // Create sample employees with full details if this set of employee you see on
-        // the jtable for employee your app is on the problem hahaha
         LocalDate sampleDate = LocalDate.of(1990, 1, 1);
         employees.add(new RegularEmployee(
                 10001, "Garcia", "Manuel", sampleDate, "Sample Address", "123-456-789",
@@ -297,11 +244,6 @@ public class DataRepository {
         logger.info("Loaded sample employee data");
     }
 
-    /**
-     * Loads attendance records from a CSV file
-     * 
-     * @throws IOException if the file cannot be read
-     */
     private void loadAttendanceRecords() throws IOException {
         List<AttendanceRecord> records = new ArrayList<>();
         logger.log(Level.INFO, "Loading attendance from: {0}", attendanceFilePath);
@@ -347,9 +289,9 @@ public class DataRepository {
     private AttendanceRecord createAttendanceFromRecord(CSVRecord record) {
         try {
             int employeeId = Integer.parseInt(record.get(0));
-            LocalDate date = parseFlexibleDate(record.get(3)); // Using correct column index for Date (3)
-            LocalTime timeIn = parseFlexibleDateTime(record.get(4)); // Using correct column index for Log In (4)
-            LocalTime timeOut = parseFlexibleDateTime(record.get(5)); // Using correct column index for Log Out (5)
+            LocalDate date = parseFlexibleDate(record.get(3));
+            LocalTime timeIn = parseFlexibleDateTime(record.get(4));
+            LocalTime timeOut = parseFlexibleDateTime(record.get(5));
 
             return new AttendanceRecord(employeeId, date, timeIn, timeOut);
         } catch (NumberFormatException | DateTimeParseException ex) {
@@ -387,14 +329,13 @@ public class DataRepository {
             return LocalDate.now();
         }
 
-        // Clean up the date string - sometimes quotes or extra spaces might be present
         String cleanedDateStr = dateStr.trim().replace("\"", "");
 
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
             try {
                 return LocalDate.parse(cleanedDateStr, formatter);
             } catch (DateTimeParseException e) {
-                // Try the next formatter
+                // try next
             }
         }
 
@@ -408,14 +349,13 @@ public class DataRepository {
             return LocalTime.of(8, 0);
         }
 
-        // Clean up the time string - sometimes quotes or extra spaces might be present
         String cleanedTimeStr = timeStr.trim().replace("\"", "");
 
         for (DateTimeFormatter formatter : TIME_FORMATTERS) {
             try {
                 return LocalTime.parse(cleanedTimeStr, formatter);
             } catch (DateTimeParseException e) {
-                // Try the next formatter
+                // try next
             }
         }
 

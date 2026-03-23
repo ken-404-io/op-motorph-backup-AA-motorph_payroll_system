@@ -2,9 +2,9 @@ package com.motorph.model;
 
 import java.time.LocalDate;
 
+// Inheritance + Polymorphism
 public class RegularEmployee extends Employee {
 
-    // Short constructor - used when only basic fields are available
     public RegularEmployee(int employeeId, String lastName, String firstName, String position,
                            String status, double basicSalary, double riceSubsidy,
                            double phoneAllowance, double clothingAllowance) {
@@ -12,7 +12,6 @@ public class RegularEmployee extends Employee {
               basicSalary, riceSubsidy, phoneAllowance, clothingAllowance);
     }
 
-    // Full constructor - used when all employee details are available
     public RegularEmployee(
             int employeeId,
             String lastName,

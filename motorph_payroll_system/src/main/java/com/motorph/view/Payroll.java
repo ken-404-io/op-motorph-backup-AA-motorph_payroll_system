@@ -27,24 +27,12 @@ import com.motorph.model.PayrollStatus;
 import com.motorph.util.AppConstants;
 import com.motorph.view.dialog.DateRangeDialog;
 
-/**
- * 🎯 Professional Payroll Management Panel
- * 
- * Features:
- * - Modern workflow-based UI
- * - CSV upload and validation
- * - Professional payroll table with review capabilities
- * - Approval workflow with POST to accounting
- * - Comprehensive reporting
- * - Real-time status tracking
- */
 public class Payroll extends JPanel {
 
     private final MainFrame mainFrame;
     private final PayrollController payrollController;
     private final NumberFormat currencyFormat;
 
-    // UI Components
     private JPanel headerPanel;
     private JPanel workflowPanel;
     private JPanel tablePanel;
@@ -60,7 +48,6 @@ public class Payroll extends JPanel {
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-    // Workflow buttons
     private JButton uploadCSVButton;
     private JButton calculateButton;
     private JButton reviewButton;
@@ -70,11 +57,9 @@ public class Payroll extends JPanel {
     private JButton backButton;
     private JButton refreshButton;
 
-    // Current payroll run state
     private PayrollRun currentPayrollRun;
     private List<PaySlip> currentPayslips;
 
-    // Table columns
     private static final String[] COLUMN_NAMES = {
             "Emp ID", "Employee Name", "Regular Hours", "OT Hours",
             "Gross Pay", "SSS", "PhilHealth", "Pag-IBIG", "Tax",
@@ -105,7 +90,6 @@ public class Payroll extends JPanel {
         setBackground(AppConstants.BACKGROUND_COLOR);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Initialize panels
         createHeaderPanel();
         createWorkflowPanel();
         createTablePanel();
@@ -120,7 +104,6 @@ public class Payroll extends JPanel {
                 BorderFactory.createLineBorder(AppConstants.BORDER_COLOR),
                 new EmptyBorder(15, 20, 15, 20)));
 
-        // Title and status
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(AppConstants.BACKGROUND_COLOR);
 
@@ -136,7 +119,6 @@ public class Payroll extends JPanel {
         titlePanel.add(Box.createHorizontalStrut(20));
         titlePanel.add(statusLabel);
 
-        // Period and progress
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         infoPanel.setBackground(AppConstants.BACKGROUND_COLOR);
 
@@ -205,13 +187,11 @@ public class Payroll extends JPanel {
         tablePanel.setBackground(AppConstants.BACKGROUND_COLOR);
         tablePanel.setBorder(BorderFactory.createTitledBorder("Payroll Data"));
 
-        // Create table model
         tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                // Only allow editing of deduction columns when in review status
                 return currentPayrollRun.getStatus() == PayrollStatus.REVIEW &&
-                        (column >= 5 && column <= 9); // Deduction columns
+                        (column >= 5 && column <= 9);
             }
 
             @Override
@@ -239,18 +219,15 @@ public class Payroll extends JPanel {
         payrollTable.setSelectionBackground(AppConstants.SELECTION_COLOR);
         payrollTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        // Set column widths
         int[] columnWidths = { 60, 150, 80, 80, 100, 80, 80, 80, 80, 100, 100, 80 };
         for (int i = 0; i < columnWidths.length && i < payrollTable.getColumnCount(); i++) {
             TableColumn column = payrollTable.getColumnModel().getColumn(i);
             column.setPreferredWidth(columnWidths[i]);
         }
 
-        // Custom renderers
         payrollTable.setDefaultRenderer(Double.class, new CurrencyRenderer());
         payrollTable.getColumnModel().getColumn(11).setCellRenderer(new StatusRenderer());
 
-        // Add change listener for editing
         tableModel.addTableModelListener(e -> {
             if (e.getType() == javax.swing.event.TableModelEvent.UPDATE) {
                 updateSummary();
@@ -320,7 +297,6 @@ public class Payroll extends JPanel {
                 progressBar.setIndeterminate(true);
 
                 try {
-                    // Validate and load CSV
                     validateAndLoadCSV(selectedFile);
                     currentPayrollRun.setStatus(PayrollStatus.DATA_LOADED);
                     updateProgress(20, "Data uploaded successfully");
@@ -353,11 +329,11 @@ public class Payroll extends JPanel {
             while ((line = reader.readLine()) != null) {
                 if (isFirstLine) {
                     isFirstLine = false;
-                    continue; // Skip header
+                    continue;
                 }
 
                 String[] values = line.split(",");
-                if (values.length >= 3) { // Minimum required columns
+                if (values.length >= 3) {
                     csvData.add(values);
                 }
             }
@@ -380,7 +356,6 @@ public class Payroll extends JPanel {
             return;
         }
 
-        // Show date range dialog
         DateRangeDialog dateDialog = new DateRangeDialog(mainFrame, "Select Pay Period");
         dateDialog.setVisible(true);
 
@@ -396,14 +371,12 @@ public class Payroll extends JPanel {
             progressBar.setIndeterminate(true);
 
             try {
-                // Generate payroll
                 currentPayslips = payrollController.generatePayroll(startDate, endDate);
 
                 if (currentPayslips.isEmpty()) {
                     throw new RuntimeException("No payroll data generated");
                 }
 
-                // Update UI
                 populateTable();
                 updateSummary();
                 updatePeriodInfo(startDate, endDate);
@@ -457,9 +430,7 @@ public class Payroll extends JPanel {
     }
 
     private double getDeduction(PaySlip paySlip, String type) {
-        // Get deduction from payslip based on type
-        // This would need to be implemented based on your PaySlip structure
-        return paySlip.getTotalDeductions() / 5; // Simplified for now
+        return paySlip.getTotalDeductions() / 5;
     }
 
     private void enterReviewMode() {
@@ -530,10 +501,8 @@ public class Payroll extends JPanel {
                 progressBar.setIndeterminate(true);
 
                 try {
-                    // Simulate posting process
                     Thread.sleep(2000);
 
-                    // Generate accounting entries
                     generateAccountingEntries();
 
                     currentPayrollRun.setStatus(PayrollStatus.POSTED);
@@ -571,7 +540,6 @@ public class Payroll extends JPanel {
             writer.write("Posted: " + LocalDate.now() + "\n");
             writer.write("Employees: " + currentPayslips.size() + "\n\n");
 
-            // Calculate totals for journal entries
             double totalGross = currentPayslips.stream().mapToDouble(PaySlip::getGrossPay).sum();
             double totalDeductions = currentPayslips.stream().mapToDouble(PaySlip::getTotalDeductions).sum();
             double totalNet = currentPayslips.stream().mapToDouble(PaySlip::getNetPay).sum();
@@ -665,7 +633,6 @@ public class Payroll extends JPanel {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            // Reset everything
             tableModel.setRowCount(0);
             currentPayslips.clear();
             initializePayrollRun();
@@ -679,11 +646,9 @@ public class Payroll extends JPanel {
     private void updateUIState() {
         PayrollStatus status = currentPayrollRun.getStatus();
 
-        // Update status label
         statusLabel.setText("Status: " + status.getDisplayName());
         statusLabel.setForeground(getStatusColor(status));
 
-        // Enable/disable buttons based on status
         uploadCSVButton.setEnabled(status == PayrollStatus.DRAFT);
         calculateButton.setEnabled(status == PayrollStatus.DATA_LOADED);
         reviewButton.setEnabled(status == PayrollStatus.CALCULATED);
@@ -691,26 +656,18 @@ public class Payroll extends JPanel {
         postToAccountingButton.setEnabled(status == PayrollStatus.APPROVED);
         generateReportButton.setEnabled(status != PayrollStatus.DRAFT);
 
-        // Update table editability
         payrollTable.repaint();
     }
 
     private Color getStatusColor(PayrollStatus status) {
         switch (status) {
-            case DRAFT:
-                return AppConstants.PAYROLL_DRAFT_COLOR;
-            case DATA_LOADED:
-                return AppConstants.PAYROLL_LOADED_COLOR;
-            case CALCULATED:
-                return AppConstants.PAYROLL_CALCULATED_COLOR;
-            case REVIEW:
-                return AppConstants.PAYROLL_REVIEW_COLOR;
-            case APPROVED:
-                return AppConstants.PAYROLL_APPROVED_COLOR;
-            case POSTED:
-                return AppConstants.PAYROLL_POSTED_COLOR;
-            default:
-                return AppConstants.TEXT_COLOR;
+            case DRAFT: return AppConstants.PAYROLL_DRAFT_COLOR;
+            case DATA_LOADED: return AppConstants.PAYROLL_LOADED_COLOR;
+            case CALCULATED: return AppConstants.PAYROLL_CALCULATED_COLOR;
+            case REVIEW: return AppConstants.PAYROLL_REVIEW_COLOR;
+            case APPROVED: return AppConstants.PAYROLL_APPROVED_COLOR;
+            case POSTED: return AppConstants.PAYROLL_POSTED_COLOR;
+            default: return AppConstants.TEXT_COLOR;
         }
     }
 
@@ -744,7 +701,6 @@ public class Payroll extends JPanel {
                 currencyFormat.format(totalNet)));
     }
 
-    // Custom table cell renderers
     private class CurrencyRenderer extends DefaultTableCellRenderer {
         @Override
         protected void setValue(Object value) {

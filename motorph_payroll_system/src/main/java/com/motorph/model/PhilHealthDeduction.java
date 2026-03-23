@@ -2,10 +2,7 @@ package com.motorph.model;
 
 import com.motorph.util.AppConstants;
 
-/**
- * INHERITANCE: Extends BaseDeduction.
- * POLYMORPHISM: Implements calculate() using a percentage rate.
- */
+// Inheritance + Polymorphism
 public class PhilHealthDeduction extends BaseDeduction {
 
     public PhilHealthDeduction() {

@@ -5,9 +5,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-/**
- * Represents a payslip for an employee for a specific period.
- */
 public class PaySlip {
 
     private Employee employee;
@@ -30,9 +27,6 @@ public class PaySlip {
         this.allowances = new HashMap<>();
     }
 
-    // ==============================
-    // MAIN GENERATE METHOD
-    // ==============================
     public void generate(List<AttendanceRecord> attendanceRecords, PayrollProcessor calculator) {
 
         Map<String, Double> payDetails = getGrossPayDetails(attendanceRecords);
@@ -41,7 +35,6 @@ public class PaySlip {
         this.overtimeHours = payDetails.get("overtimeHours");
         this.grossPay = payDetails.get("totalPay");
 
-        // Allowances
         Map<String, Double> allowanceDetails = getProRatedAllowanceDetails();
 
         allowances.put("rice", allowanceDetails.get("riceSubsidy"));
@@ -50,7 +43,6 @@ public class PaySlip {
 
         double totalAllowances = allowanceDetails.get("totalAllowances");
 
-        // Deductions
         double sss = calculator.calculateSSSContribution(grossPay);
         double philhealth = calculator.calculatePhilHealthContribution(grossPay);
         double pagibig = calculator.calculatePagIbigContribution(grossPay);
@@ -66,13 +58,9 @@ public class PaySlip {
 
         double totalDeductions = getTotalDeductions();
 
-        // Net Pay
         this.netPay = grossPay - totalDeductions + totalAllowances;
     }
 
-    // ==============================
-    // GROSS PAY COMPUTATION
-    // ==============================
     private Map<String, Double> getGrossPayDetails(List<AttendanceRecord> attendanceRecords) {
 
         double regularHours = 0;
@@ -110,9 +98,6 @@ public class PaySlip {
         return result;
     }
 
-    // ==============================
-    // ALLOWANCES (PRORATED)
-    // ==============================
     private Map<String, Double> getProRatedAllowanceDetails() {
 
         long totalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
@@ -135,9 +120,6 @@ public class PaySlip {
         return result;
     }
 
-    // ==============================
-    // TOTAL DEDUCTIONS
-    // ==============================
     public double getTotalDeductions() {
         return deductions.values()
                 .stream()
@@ -145,42 +127,13 @@ public class PaySlip {
                 .sum();
     }
 
-    // ==============================
-    // GETTERS
-    // ==============================
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public double getRegularHours() {
-        return regularHours;
-    }
-
-    public double getOvertimeHours() {
-        return overtimeHours;
-    }
-
-    public double getGrossPay() {
-        return grossPay;
-    }
-
-    public double getNetPay() {
-        return netPay;
-    }
-
-    public Map<String, Double> getDeductions() {
-        return deductions;
-    }
-
-    public Map<String, Double> getAllowances() {
-        return allowances;
-    }
+    public Employee getEmployee() { return employee; }
+    public LocalDate getStartDate() { return startDate; }
+    public LocalDate getEndDate() { return endDate; }
+    public double getRegularHours() { return regularHours; }
+    public double getOvertimeHours() { return overtimeHours; }
+    public double getGrossPay() { return grossPay; }
+    public double getNetPay() { return netPay; }
+    public Map<String, Double> getDeductions() { return deductions; }
+    public Map<String, Double> getAllowances() { return allowances; }
 }

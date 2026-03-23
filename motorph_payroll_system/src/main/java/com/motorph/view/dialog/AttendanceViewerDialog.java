@@ -21,30 +21,17 @@ import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 import com.motorph.util.AppConstants;
 
-/**
- * 🎯 Professional Attendance Viewer Panel
- * 
- * Features:
- * - Month/Year filtering with intuitive controls
- * - Professional table with status indicators
- * - Analytics panel with attendance insights
- * - Visual charts and summaries
- * - Export capabilities
- * - Professional styling throughout
- */
 public class AttendanceViewerDialog extends JDialog {
 
     private final Employee employee;
     private final EmployeeController employeeController;
 
-    // UI Components
     private JPanel mainPanel;
     private JPanel filterPanel;
     private JPanel analyticsPanel;
     private JPanel tablePanel;
     private JPanel summaryPanel;
 
-    // Filter Components
     private JComboBox<String> monthComboBox;
     private JComboBox<Integer> yearComboBox;
     private JButton filterButton;
@@ -52,12 +39,10 @@ public class AttendanceViewerDialog extends JDialog {
     private JButton exportButton;
     private JButton closeButton;
 
-    // Table Components
     private JTable attendanceTable;
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-    // Analytics Components
     private JPanel totalDaysLabel;
     private JPanel presentDaysLabel;
     private JPanel lateDaysLabel;
@@ -66,11 +51,9 @@ public class AttendanceViewerDialog extends JDialog {
     private JPanel attendanceRateLabel;
     private JProgressBar attendanceRateBar;
 
-    // Data
     private List<AttendanceRecord> allRecords;
     private List<AttendanceRecord> filteredRecords;
 
-    // Current filter
     private YearMonth currentFilter = null;
 
     private static final String[] COLUMN_NAMES = {
@@ -96,9 +79,8 @@ public class AttendanceViewerDialog extends JDialog {
     }
 
     private void initializeData() {
-        // Load all attendance records for the employee
-        LocalDate startDate = LocalDate.of(2020, 1, 1); // Historical data
-        LocalDate endDate = LocalDate.now().plusDays(30); // Include future if any
+        LocalDate startDate = LocalDate.of(2020, 1, 1);
+        LocalDate endDate = LocalDate.now().plusDays(30);
 
         allRecords = employeeController.getAttendanceRecords(
                 employee.getEmployeeId(), startDate, endDate);
@@ -126,12 +108,10 @@ public class AttendanceViewerDialog extends JDialog {
                 BorderFactory.createTitledBorder("📊 Filter & Controls"),
                 new EmptyBorder(10, 10, 10, 10)));
 
-        // Employee info
         JLabel employeeLabel = new JLabel("👤 " + employee.getFullName() + " (ID: " + employee.getEmployeeId() + ")");
         employeeLabel.setFont(AppConstants.SUBHEADING_FONT);
         employeeLabel.setForeground(AppConstants.PRIMARY_COLOR);
 
-        // Month filter
         JLabel monthLabel = new JLabel("Month:");
         monthLabel.setFont(AppConstants.NORMAL_FONT);
 
@@ -144,7 +124,6 @@ public class AttendanceViewerDialog extends JDialog {
                 BorderFactory.createLineBorder(AppConstants.BORDER_COLOR, 1),
                 BorderFactory.createEmptyBorder(2, 8, 2, 8)));
 
-        // Year filter
         JLabel yearLabel = new JLabel("Year:");
         yearLabel.setFont(AppConstants.NORMAL_FONT);
 
@@ -157,12 +136,10 @@ public class AttendanceViewerDialog extends JDialog {
                 BorderFactory.createEmptyBorder(2, 8, 2, 8)));
         yearComboBox.setSelectedItem(LocalDate.now().getYear());
 
-        // Enhanced action buttons with better labels
         filterButton = createActionButton("🔍 Apply Filter", AppConstants.PRIMARY_BUTTON_COLOR);
         resetButton = createActionButton("🔄 Reset View", AppConstants.SECONDARY_BUTTON_COLOR);
         exportButton = createActionButton("📄 Export Data", AppConstants.SUCCESS_COLOR);
 
-        // Layout with improved spacing for enhanced buttons
         filterPanel.add(employeeLabel);
         filterPanel.add(Box.createHorizontalStrut(25));
         filterPanel.add(Box.createHorizontalGlue());
@@ -187,33 +164,24 @@ public class AttendanceViewerDialog extends JDialog {
     private JButton createActionButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
 
-        // Enhanced styling
         button.setFont(new Font("Segoe UI", Font.BOLD, 12));
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
-        button.setFocusPainted(true); // Enable focus painting for better accessibility
+        button.setFocusPainted(true);
         button.setBorderPainted(false);
         button.setOpaque(true);
-
-        // Add subtle focus border
         button.setFocusable(true);
-
-        // Improved dimensions and padding
         button.setPreferredSize(new Dimension(140, 35));
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(backgroundColor.darker(), 1),
                 BorderFactory.createEmptyBorder(8, 16, 8, 16)));
-
-        // Add modern rounded corners effect
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // Add hover effects
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             private Color originalColor = backgroundColor;
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                // Lighten the button color on hover
                 Color hoverColor = new Color(
                         Math.min(255, originalColor.getRed() + 20),
                         Math.min(255, originalColor.getGreen() + 20),
@@ -226,7 +194,6 @@ public class AttendanceViewerDialog extends JDialog {
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
-                // Return to original color
                 button.setBackground(originalColor);
                 button.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(originalColor.darker(), 1),
@@ -235,14 +202,12 @@ public class AttendanceViewerDialog extends JDialog {
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                // Darken the button when pressed
                 Color pressedColor = originalColor.darker();
                 button.setBackground(pressedColor);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e) {
-                // Return to hover color when released (if still hovering)
                 if (button.contains(e.getPoint())) {
                     Color hoverColor = new Color(
                             Math.min(255, originalColor.getRed() + 20),
@@ -260,7 +225,7 @@ public class AttendanceViewerDialog extends JDialog {
 
     private Integer[] generateYearRange() {
         int currentYear = LocalDate.now().getYear();
-        Integer[] years = new Integer[6]; // 3 years back, current, 2 years forward
+        Integer[] years = new Integer[6];
         for (int i = 0; i < 6; i++) {
             years[i] = currentYear - 3 + i;
         }
@@ -274,7 +239,6 @@ public class AttendanceViewerDialog extends JDialog {
                 BorderFactory.createTitledBorder("📈 Attendance Analytics"),
                 new EmptyBorder(15, 15, 15, 15)));
 
-        // Create professional metric cards
         totalDaysLabel = createSimpleMetricCard("📅", "Total Days", "0");
         presentDaysLabel = createSimpleMetricCard("✅", "Present", "0");
         lateDaysLabel = createSimpleMetricCard("⏰", "Late Arrivals", "0");
@@ -282,13 +246,9 @@ public class AttendanceViewerDialog extends JDialog {
         avgHoursLabel = createSimpleMetricCard("📊", "Avg Hours/Day", "0.0");
         attendanceRateLabel = createSimpleMetricCard("📈", "Attendance Rate", "0%");
 
-        // Professional progress panel
         JPanel progressPanel = createSimpleProgressCard();
-
-        // Professional trend panel
         JPanel trendPanel = createSimpleTrendCard();
 
-        // Add all cards
         analyticsPanel.add(totalDaysLabel);
         analyticsPanel.add(presentDaysLabel);
         analyticsPanel.add(lateDaysLabel);
@@ -390,11 +350,10 @@ public class AttendanceViewerDialog extends JDialog {
         tablePanel.setBackground(AppConstants.BACKGROUND_COLOR);
         tablePanel.setBorder(BorderFactory.createTitledBorder("📋 Attendance Records"));
 
-        // Create table model
         tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Read-only table
+                return false;
             }
 
             @Override
@@ -403,7 +362,7 @@ public class AttendanceViewerDialog extends JDialog {
                     case 5:
                     case 6:
                     case 7:
-                        return Double.class; // Hours columns
+                        return Double.class;
                     default:
                         return String.class;
                 }
@@ -428,19 +387,16 @@ public class AttendanceViewerDialog extends JDialog {
         attendanceTable.setAutoCreateRowSorter(true);
         attendanceTable.setFillsViewportHeight(true);
 
-        // Set column widths
         int[] columnWidths = { 80, 60, 80, 80, 70, 80, 70, 70, 80, 120 };
         for (int i = 0; i < columnWidths.length && i < attendanceTable.getColumnCount(); i++) {
             TableColumn column = attendanceTable.getColumnModel().getColumn(i);
             column.setPreferredWidth(columnWidths[i]);
         }
 
-        // Custom renderers
         attendanceTable.setDefaultRenderer(Double.class, new HoursRenderer());
-        attendanceTable.getColumnModel().getColumn(8).setCellRenderer(new StatusRenderer()); // Status column
-        attendanceTable.getColumnModel().getColumn(1).setCellRenderer(new DayRenderer()); // Day column
+        attendanceTable.getColumnModel().getColumn(8).setCellRenderer(new StatusRenderer());
+        attendanceTable.getColumnModel().getColumn(1).setCellRenderer(new DayRenderer());
 
-        // Header styling
         attendanceTable.getTableHeader().setBackground(AppConstants.TABLE_HEADER_BACKGROUND);
         attendanceTable.getTableHeader().setForeground(AppConstants.TEXT_COLOR);
         attendanceTable.getTableHeader().setFont(AppConstants.TABLE_HEADER_FONT);
@@ -451,12 +407,10 @@ public class AttendanceViewerDialog extends JDialog {
         summaryPanel.setBackground(AppConstants.BACKGROUND_COLOR);
         summaryPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-        // Summary info
         JLabel summaryLabel = new JLabel("📊 Showing all records");
         summaryLabel.setFont(AppConstants.SMALL_FONT);
         summaryLabel.setForeground(AppConstants.TEXT_SECONDARY);
 
-        // Enhanced close button
         closeButton = createActionButton("✖ Close Dialog", AppConstants.SECONDARY_BUTTON_COLOR);
 
         summaryPanel.add(summaryLabel, BorderLayout.WEST);
@@ -483,7 +437,6 @@ public class AttendanceViewerDialog extends JDialog {
         exportButton.addActionListener(this::exportData);
         closeButton.addActionListener(e -> dispose());
 
-        // Month/Year change listeners
         monthComboBox.addActionListener(e -> updateFilterButtonState());
         yearComboBox.addActionListener(e -> updateFilterButtonState());
     }
@@ -496,7 +449,6 @@ public class AttendanceViewerDialog extends JDialog {
     }
 
     private void loadInitialData() {
-        // Set current month and year by default
         monthComboBox.setSelectedIndex(LocalDate.now().getMonthValue());
         yearComboBox.setSelectedItem(LocalDate.now().getYear());
         applyFilter(null);
@@ -507,13 +459,11 @@ public class AttendanceViewerDialog extends JDialog {
         int year = (Integer) yearComboBox.getSelectedItem();
 
         if (monthIndex == 0) {
-            // All months for the year
             currentFilter = null;
             filteredRecords = allRecords.stream()
                     .filter(record -> record.getDate().getYear() == year)
                     .collect(Collectors.toList());
         } else {
-            // Specific month and year
             currentFilter = YearMonth.of(year, monthIndex);
             filteredRecords = allRecords.stream()
                     .filter(record -> {
@@ -551,12 +501,12 @@ public class AttendanceViewerDialog extends JDialog {
             row[1] = record.getDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
             row[2] = record.getTimeIn().toString();
             row[3] = record.getTimeOut().toString();
-            row[4] = "1:00"; // Default break time - could be enhanced
+            row[4] = "1:00";
             row[5] = record.getTotalHours();
-            row[6] = Math.min(record.getTotalHours(), 8.0); // Regular hours (max 8)
-            row[7] = Math.max(0, record.getTotalHours() - 8.0); // Overtime
+            row[6] = Math.min(record.getTotalHours(), 8.0);
+            row[7] = Math.max(0, record.getTotalHours() - 8.0);
             row[8] = record.isLate() ? "Late" : "On Time";
-            row[9] = record.isLate() ? "Late arrival" : ""; // Remarks
+            row[9] = record.isLate() ? "Late arrival" : "";
 
             tableModel.addRow(row);
         }
@@ -580,10 +530,9 @@ public class AttendanceViewerDialog extends JDialog {
         double totalHours = filteredRecords.stream().mapToDouble(AttendanceRecord::getTotalHours).sum();
         double avgHours = totalHours / totalDays;
 
-        // Calculate expected days for attendance rate
         int expectedDays = calculateExpectedWorkingDays();
         double attendanceRate = expectedDays > 0 ? (double) totalDays / expectedDays * 100 : 100;
-        attendanceRate = Math.min(100, attendanceRate); // Cap at 100%
+        attendanceRate = Math.min(100, attendanceRate);
 
         updateMetricCard(totalDaysLabel, "📅", "Total Days", String.valueOf(totalDays));
         updateMetricCard(presentDaysLabel, "✅", "Present", String.valueOf(totalDays));
@@ -595,7 +544,6 @@ public class AttendanceViewerDialog extends JDialog {
         attendanceRateBar.setValue((int) attendanceRate);
         attendanceRateBar.setString(String.format("%.1f%%", attendanceRate));
 
-        // Set progress bar color based on rate
         if (attendanceRate >= 95) {
             attendanceRateBar.setForeground(AppConstants.SUCCESS_COLOR);
         } else if (attendanceRate >= 85) {
@@ -606,7 +554,6 @@ public class AttendanceViewerDialog extends JDialog {
     }
 
     private void updateMetricCard(JPanel cardPanel, String icon, String title, String value) {
-        // Find the JLabel inside the panel and update its text
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JLabel) {
@@ -625,7 +572,6 @@ public class AttendanceViewerDialog extends JDialog {
 
     private int calculateExpectedWorkingDays() {
         if (currentFilter != null) {
-            // For specific month, calculate working days (exclude weekends)
             YearMonth yearMonth = currentFilter;
             LocalDate start = yearMonth.atDay(1);
             LocalDate end = yearMonth.atEndOfMonth();
@@ -633,15 +579,14 @@ public class AttendanceViewerDialog extends JDialog {
             int workingDays = 0;
             LocalDate current = start;
             while (!current.isAfter(end)) {
-                if (current.getDayOfWeek().getValue() <= 5) { // Monday to Friday
+                if (current.getDayOfWeek().getValue() <= 5) {
                     workingDays++;
                 }
                 current = current.plusDays(1);
             }
             return workingDays;
         } else {
-            // For full year or all records, estimate based on total days
-            return filteredRecords.size(); // Simplified - could be enhanced
+            return filteredRecords.size();
         }
     }
 
@@ -671,14 +616,12 @@ public class AttendanceViewerDialog extends JDialog {
     }
 
     private void addButtonTooltips() {
-        // Add helpful tooltips to buttons
         filterButton.setToolTipText("Apply the selected month and year filter to view specific attendance records");
         resetButton.setToolTipText("Reset the view to show all attendance records for the current year");
         exportButton.setToolTipText("Export the filtered attendance data to CSV format for external use");
         closeButton.setToolTipText("Close the attendance viewer dialog and return to the employee list");
     }
 
-    // Custom cell renderers
     private class HoursRenderer extends DefaultTableCellRenderer {
         @Override
         protected void setValue(Object value) {
@@ -700,11 +643,11 @@ public class AttendanceViewerDialog extends JDialog {
             setHorizontalAlignment(SwingConstants.CENTER);
             if (!isSelected) {
                 if ("Late".equals(value)) {
-                    setBackground(new Color(254, 226, 226)); // Red tint
-                    setForeground(new Color(153, 27, 27)); // Dark red
+                    setBackground(new Color(254, 226, 226));
+                    setForeground(new Color(153, 27, 27));
                 } else {
-                    setBackground(new Color(220, 252, 231)); // Green tint
-                    setForeground(new Color(21, 128, 61)); // Dark green
+                    setBackground(new Color(220, 252, 231));
+                    setForeground(new Color(21, 128, 61));
                 }
             }
 
@@ -729,9 +672,6 @@ public class AttendanceViewerDialog extends JDialog {
         }
     }
 
-    /**
-     * Show the attendance viewer dialog
-     */
     public static void showAttendanceViewer(Frame parent, Employee employee, EmployeeController employeeController) {
         AttendanceViewerDialog dialog = new AttendanceViewerDialog(parent, employee, employeeController);
         dialog.setVisible(true);

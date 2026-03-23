@@ -8,22 +8,10 @@ import java.util.List;
 import com.motorph.model.Employee;
 import com.opencsv.CSVWriter;
 
-/**
- * Utility class for writing employee data to CSV files.
- * Use this when you need to create or overwrite an employee CSV file.
- */
 public class CSVCreateAndWrite {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-    /**
-     * Writes a list of employees to a CSV file, including a header row.
-     * Overwrites the file if it already exists.
-     *
-     * @param employees The list of employees to write
-     * @param filePath  The path of the CSV file to create or overwrite
-     * @throws IOException if the file cannot be written
-     */
     public void writeEmployees(List<Employee> employees, String filePath) throws IOException {
         try (FileWriter fileWriter = new FileWriter(filePath);
              CSVWriter writer = new CSVWriter(fileWriter)) {

@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 import com.motorph.util.AppConstants;
 
+// Inheritance + Polymorphism
 public class ContractualEmployee extends Employee {
 
-    // Short constructor - used when only basic fields are available
     public ContractualEmployee(int employeeId, String lastName, String firstName,
                                String position, String status, double basicSalary,
                                double riceSubsidy, double phoneAllowance, double clothingAllowance) {
@@ -14,7 +14,6 @@ public class ContractualEmployee extends Employee {
               basicSalary, riceSubsidy, phoneAllowance, clothingAllowance);
     }
 
-    // Full constructor - used when all employee details are available
     public ContractualEmployee(
             int employeeId,
             String lastName,

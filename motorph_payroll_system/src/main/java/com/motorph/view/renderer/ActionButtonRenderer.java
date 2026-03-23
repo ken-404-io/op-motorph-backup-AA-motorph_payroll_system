@@ -12,10 +12,6 @@ import javax.swing.table.TableCellRenderer;
 import com.motorph.util.AppConstants;
 import com.motorph.util.AppUtils;
 
-/**
- * Custom table cell renderer for action buttons in employee table.
- * Displays View, Edit, and Delete buttons like in the prototype.
- */
 public class ActionButtonRenderer extends JPanel implements TableCellRenderer {
 
     private JButton viewButton;
@@ -25,9 +21,7 @@ public class ActionButtonRenderer extends JPanel implements TableCellRenderer {
 
     public interface ActionButtonListener {
         void onViewClicked(int row);
-
         void onEditClicked(int row);
-
         void onDeleteClicked(int row);
     }
 
@@ -35,7 +29,6 @@ public class ActionButtonRenderer extends JPanel implements TableCellRenderer {
         setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
         setBackground(AppConstants.PANEL_BACKGROUND);
 
-        // Create action buttons
         viewButton = AppUtils.createActionButton("View", false);
         editButton = AppUtils.createActionButton("Edit", false);
         deleteButton = AppUtils.createActionButton("Delete", true);
@@ -53,7 +46,6 @@ public class ActionButtonRenderer extends JPanel implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
 
-        // Update button listeners with current row
         removeAllActionListeners();
 
         if (listener != null) {

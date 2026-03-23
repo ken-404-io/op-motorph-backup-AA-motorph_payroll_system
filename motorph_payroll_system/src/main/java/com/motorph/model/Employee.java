@@ -3,9 +3,10 @@ package com.motorph.model;
 import com.motorph.util.AppConstants;
 import java.time.LocalDate;
 
-
+// Abstraction
 public abstract class Employee {
 
+    // Encapsulation
     private int employeeId;
     private String lastName;
     private String firstName;
@@ -27,7 +28,6 @@ public abstract class Employee {
     private double grossSemiMonthlyRate;
     private double hourlyRate;
 
-    // Constructor
     public Employee(
             int employeeId,
             String lastName,
@@ -48,7 +48,6 @@ public abstract class Employee {
             double clothingAllowance,
             double grossSemiMonthlyRate
     ) {
-
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -85,16 +84,11 @@ public abstract class Employee {
         calculateHourlyRate();
     }
 
-    // =========================
-    // ABSTRACTION (FIXED)
-    // =========================
+    // Abstraction
     public abstract double calculateGrossPay();
     public abstract double calculateDeductions();
     public abstract double calculateNetPay();
 
-    // =========================
-    // SHARED METHOD
-    // =========================
     public final void calculateHourlyRate() {
         this.hourlyRate = basicSalary /
                 (AppConstants.STANDARD_WORK_DAYS_PER_MONTH *
@@ -105,86 +99,6 @@ public abstract class Employee {
         return firstName + " " + lastName;
     }
 
-    // ==============================
-// COMPLETE GETTERS (FINAL FIX)
-// ==============================
-
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getSssNumber() {
-        return sssNumber;
-    }
-
-    public String getPhilhealthNumber() {
-        return philhealthNumber;
-    }
-
-    public String getTinNumber() {
-        return tinNumber;
-    }
-
-    public String getPagibigNumber() {
-        return pagibigNumber;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getSupervisor() {
-        return supervisor;
-    }
-
-    public double getBasicSalary() {
-        return basicSalary;
-    }
-
-    public double getRiceSubsidy() {
-        return riceSubsidy;
-    }
-
-    public double getPhoneAllowance() {
-        return phoneAllowance;
-    }
-
-    public double getClothingAllowance() {
-        return clothingAllowance;
-    }
-
-    public double getHourlyRate() {
-        return hourlyRate;
-    }
-
-    // ==============================
-// PAY COMPUTATION METHODS
-// ==============================
-
     public double calculateRegularPay(double hours) {
         return hours * hourlyRate;
     }
@@ -193,7 +107,23 @@ public abstract class Employee {
         return hours * hourlyRate * 1.25;
     }
 
-    public double getGrossSemiMonthlyRate() {
-        return grossSemiMonthlyRate;
-    }
+    public int getEmployeeId() { return employeeId; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public LocalDate getBirthday() { return birthday; }
+    public String getAddress() { return address; }
+    public String getPhoneNumber() { return phoneNumber; }
+    public String getSssNumber() { return sssNumber; }
+    public String getPhilhealthNumber() { return philhealthNumber; }
+    public String getTinNumber() { return tinNumber; }
+    public String getPagibigNumber() { return pagibigNumber; }
+    public String getPosition() { return position; }
+    public String getStatus() { return status; }
+    public String getSupervisor() { return supervisor; }
+    public double getBasicSalary() { return basicSalary; }
+    public double getRiceSubsidy() { return riceSubsidy; }
+    public double getPhoneAllowance() { return phoneAllowance; }
+    public double getClothingAllowance() { return clothingAllowance; }
+    public double getHourlyRate() { return hourlyRate; }
+    public double getGrossSemiMonthlyRate() { return grossSemiMonthlyRate; }
 }

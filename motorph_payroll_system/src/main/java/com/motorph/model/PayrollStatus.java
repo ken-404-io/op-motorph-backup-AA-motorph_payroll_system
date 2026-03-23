@@ -1,8 +1,5 @@
 package com.motorph.model;
 
-/**
- * Enum representing the different states of a payroll run
- */
 public enum PayrollStatus {
     DRAFT("Draft", "Initial state before calculation"),
     DATA_LOADED("Data Loaded", "CSV data has been uploaded and validated"),
@@ -21,16 +18,9 @@ public enum PayrollStatus {
         this.description = description;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+    public String getDisplayName() { return displayName; }
+    public String getDescription() { return description; }
 
     @Override
-    public String toString() {
-        return displayName;
-    }
+    public String toString() { return displayName; }
 }

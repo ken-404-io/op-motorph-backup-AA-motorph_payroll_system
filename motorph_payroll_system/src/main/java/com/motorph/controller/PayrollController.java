@@ -6,10 +6,6 @@ import java.util.List;
 import com.motorph.model.PaySlip;
 import com.motorph.service.PayrollServiceInterface;
 
-/**
- * Controller for payroll-related operations.
- * Depends on the PayrollServiceInterface, not the concrete class (OOP abstraction).
- */
 public class PayrollController {
 
     private final PayrollServiceInterface payrollService;
@@ -18,15 +14,6 @@ public class PayrollController {
         this.payrollService = payrollService;
     }
 
-    /**
-     * Generates a payslip for an employee for the given pay period.
-     *
-     * @param employeeId The employee ID
-     * @param startDate  Start date for the pay period
-     * @param endDate    End date for the pay period
-     * @return PaySlip object
-     * @throws IllegalArgumentException if any parameter is invalid
-     */
     public PaySlip generatePayslip(int employeeId, LocalDate startDate, LocalDate endDate)
             throws IllegalArgumentException {
 
@@ -49,14 +36,6 @@ public class PayrollController {
         }
     }
 
-    /**
-     * Generates payroll for all employees for the given date range.
-     *
-     * @param startDate Start date for the pay period
-     * @param endDate   End date for the pay period
-     * @return List of PaySlip objects
-     * @throws IllegalArgumentException if any parameter is invalid
-     */
     public List<PaySlip> generatePayroll(LocalDate startDate, LocalDate endDate)
             throws IllegalArgumentException {
 

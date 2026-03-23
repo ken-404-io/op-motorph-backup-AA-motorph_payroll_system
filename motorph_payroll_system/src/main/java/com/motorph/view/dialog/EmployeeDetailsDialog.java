@@ -27,13 +27,6 @@ import com.motorph.model.Employee;
 import com.motorph.util.AppConstants;
 import com.motorph.util.AppUtils;
 
-/**
- * 🎯 Enhanced Employee Details Dialog - Professional Design with Complete CSV
- * Data Integration
- *
- * Modern dark-themed dialog that displays comprehensive employee information
- * from the CSV file in a well-organized, professional layout.
- */
 public class EmployeeDetailsDialog extends JDialog {
 
     private final Employee employee;
@@ -52,14 +45,12 @@ public class EmployeeDetailsDialog extends JDialog {
         setLayout(new BorderLayout());
         setBackground(AppConstants.BACKGROUND_COLOR);
 
-        // Main content panel with scrolling
         JPanel mainPanel = createMainPanel();
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
         scrollPane.setBackground(AppConstants.BACKGROUND_COLOR);
         scrollPane.getViewport().setBackground(AppConstants.BACKGROUND_COLOR);
 
-        // Style the scrollbar for modern theme
         scrollPane.getVerticalScrollBar().setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors() {
@@ -68,18 +59,15 @@ public class EmployeeDetailsDialog extends JDialog {
             }
         });
 
-        // Button panel at bottom
         JPanel buttonPanel = createButtonPanel();
 
         add(scrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Dialog settings with optimal sizing
         setSize(950, 800);
         setLocationRelativeTo(getParent());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        // Add modern accent border to the dialog
         getRootPane().setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppConstants.ACCENT_PRIMARY, 2),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
@@ -90,18 +78,15 @@ public class EmployeeDetailsDialog extends JDialog {
         mainPanel.setBackground(AppConstants.BACKGROUND_COLOR);
         mainPanel.setBorder(new EmptyBorder(25, 25, 15, 25));
 
-        // Main content card with professional styling
         JPanel contentCard = new JPanel(new BorderLayout());
         contentCard.setBackground(AppConstants.CARD_BACKGROUND);
         contentCard.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(AppConstants.BORDER_SOLID, 1),
                 new EmptyBorder(30, 30, 30, 30)));
 
-        // Header section with employee photo and key info
         JPanel headerPanel = createHeaderSection();
         contentCard.add(headerPanel, BorderLayout.NORTH);
 
-        // All information sections in vertical layout
         JPanel detailsPanel = createAllDetailsPanel();
         contentCard.add(detailsPanel, BorderLayout.CENTER);
 
@@ -114,11 +99,9 @@ public class EmployeeDetailsDialog extends JDialog {
         headerPanel.setBackground(AppConstants.CARD_BACKGROUND);
         headerPanel.setBorder(new EmptyBorder(0, 0, 25, 0));
 
-        // Left side - Employee photo and basic info
         JPanel leftSection = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         leftSection.setBackground(AppConstants.CARD_BACKGROUND);
 
-        // Employee photo placeholder with modern styling
         JPanel photoContainer = new JPanel(new BorderLayout());
         photoContainer.setPreferredSize(new Dimension(140, 140));
         photoContainer.setBackground(AppConstants.PANEL_BACKGROUND);
@@ -131,7 +114,6 @@ public class EmployeeDetailsDialog extends JDialog {
         photoLabel.setForeground(AppConstants.TEXT_SECONDARY);
         photoContainer.add(photoLabel, BorderLayout.CENTER);
 
-        // Employee key information panel
         JPanel infoPanel = new JPanel(new GridBagLayout());
         infoPanel.setBackground(AppConstants.CARD_BACKGROUND);
         infoPanel.setBorder(new EmptyBorder(5, 30, 5, 0));
@@ -140,35 +122,30 @@ public class EmployeeDetailsDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(3, 0, 3, 15);
 
-        // Employee ID - Highlighted
         gbc.gridx = 0;
         gbc.gridy = 0;
         infoPanel.add(createLabelWithIcon("🆔", "Employee ID:"), gbc);
         gbc.gridx = 1;
         infoPanel.add(createHighlightedValue("EMP-" + String.format("%05d", employee.getEmployeeId())), gbc);
 
-        // Full Name - Highlighted
         gbc.gridx = 0;
         gbc.gridy = 1;
         infoPanel.add(createLabelWithIcon("👤", "Name:"), gbc);
         gbc.gridx = 1;
         infoPanel.add(createHighlightedValue(employee.getFullName()), gbc);
 
-        // Job Title
         gbc.gridx = 0;
         gbc.gridy = 2;
         infoPanel.add(createLabelWithIcon("💼", "Job Title:"), gbc);
         gbc.gridx = 1;
         infoPanel.add(createValueLabel(getValue(employee.getPosition())), gbc);
 
-        // Department
         gbc.gridx = 0;
         gbc.gridy = 3;
         infoPanel.add(createLabelWithIcon("🏢", "Department:"), gbc);
         gbc.gridx = 1;
         infoPanel.add(createValueLabel(getDepartmentFromPosition(employee.getPosition())), gbc);
 
-        // Status with color coding
         gbc.gridx = 0;
         gbc.gridy = 4;
         infoPanel.add(createLabelWithIcon("📊", "Status:"), gbc);
@@ -191,24 +168,19 @@ public class EmployeeDetailsDialog extends JDialog {
         gbc.weightx = 1.0;
         gbc.insets = new Insets(0, 0, 20, 0);
 
-        // Personal Information Section
         gbc.gridx = 0;
         gbc.gridy = 0;
         mainDetailsPanel.add(createPersonalInfoSection(), gbc);
 
-        // Employment Details Section
         gbc.gridy = 1;
         mainDetailsPanel.add(createEmploymentSection(), gbc);
 
-        // Compensation & Benefits Section
         gbc.gridy = 2;
         mainDetailsPanel.add(createCompensationSection(), gbc);
 
-        // Government Numbers Section
         gbc.gridy = 3;
         mainDetailsPanel.add(createGovernmentNumbersSection(), gbc);
 
-        // Emergency Contact Section (placeholder)
         gbc.gridy = 4;
         mainDetailsPanel.add(createEmergencyContactSection(), gbc);
 
@@ -218,12 +190,12 @@ public class EmployeeDetailsDialog extends JDialog {
     private JPanel createPersonalInfoSection() {
         JPanel section = createSectionPanel("📋 Personal Information");
 
-        addFieldToSection(section, "� Email:", "john.doe@motorph.com ✉️"); // Placeholder
+        addFieldToSection(section, "� Email:", "john.doe@motorph.com ✉️");
         addFieldToSection(section, "�📞 Phone Number:", getValue(employee.getPhoneNumber()) + " 📞");
         addFieldToSection(section, "🏠 Address:", getValue(employee.getAddress()));
         addFieldToSection(section, "🎂 Date of Birth:", formatDate(employee.getBirthday()));
-        addFieldToSection(section, "👤 Gender:", "Not specified"); // Placeholder
-        addFieldToSection(section, "💑 Marital Status:", "Not specified"); // Placeholder
+        addFieldToSection(section, "👤 Gender:", "Not specified");
+        addFieldToSection(section, "💑 Marital Status:", "Not specified");
 
         return section;
     }
@@ -231,9 +203,9 @@ public class EmployeeDetailsDialog extends JDialog {
     private JPanel createEmploymentSection() {
         JPanel section = createSectionPanel("💼 Employment Details");
 
-        addFieldToSection(section, "� Date Hired:", "Not specified"); // Could be derived from data
+        addFieldToSection(section, "� Date Hired:", "Not specified");
         addFieldToSection(section, "📊 Employment Status:", getValue(employee.getStatus()));
-        addFieldToSection(section, "⏰ Employment Type:", "Full-time"); // Most employees are full-time
+        addFieldToSection(section, "⏰ Employment Type:", "Full-time");
         addFieldToSection(section, "👨‍💼 Manager:", getValue(employee.getSupervisor()));
 
         return section;
@@ -242,7 +214,6 @@ public class EmployeeDetailsDialog extends JDialog {
     private JPanel createCompensationSection() {
         JPanel section = createSectionPanel("💰 Compensation & Benefits");
 
-        // Format all currency values with proper Philippine Peso formatting
         addFieldToSection(section, "💵 Basic Salary:", formatCurrency(employee.getBasicSalary()));
         addFieldToSection(section, "🍚 Rice Subsidy:", formatCurrency(employee.getRiceSubsidy()));
         addFieldToSection(section, "📱 Phone Allowance:", formatCurrency(employee.getPhoneAllowance()));
@@ -267,10 +238,10 @@ public class EmployeeDetailsDialog extends JDialog {
     private JPanel createEmergencyContactSection() {
         JPanel section = createSectionPanel("🚨 Emergency Contact");
 
-        addFieldToSection(section, "👥 Contact Person:", "Not specified"); // Placeholder
-        addFieldToSection(section, "📞 Contact Number:", "Not specified"); // Placeholder
-        addFieldToSection(section, "🔗 Relationship:", "Not specified"); // Placeholder
-        addFieldToSection(section, "🏠 Contact Address:", "Not specified"); // Placeholder
+        addFieldToSection(section, "👥 Contact Person:", "Not specified");
+        addFieldToSection(section, "📞 Contact Number:", "Not specified");
+        addFieldToSection(section, "🔗 Relationship:", "Not specified");
+        addFieldToSection(section, "🏠 Contact Address:", "Not specified");
 
         return section;
     }
@@ -282,7 +253,6 @@ public class EmployeeDetailsDialog extends JDialog {
                 BorderFactory.createLineBorder(AppConstants.BORDER_SOLID, 1),
                 new EmptyBorder(20, 20, 20, 20)));
 
-        // Section title with icon
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -295,7 +265,6 @@ public class EmployeeDetailsDialog extends JDialog {
         titleLabel.setForeground(AppConstants.ACCENT_PRIMARY);
         section.add(titleLabel, gbc);
 
-        // Separator line
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 15, 0);
@@ -308,16 +277,14 @@ public class EmployeeDetailsDialog extends JDialog {
 
     private void addFieldToSection(JPanel section, String label, String value) {
         GridBagConstraints gbc = new GridBagConstraints();
-        int currentRow = section.getComponentCount() / 2; // Approximate row calculation
+        int currentRow = section.getComponentCount() / 2;
 
-        // Label
         gbc.gridx = 0;
-        gbc.gridy = currentRow + 2; // +2 to account for title and separator
+        gbc.gridy = currentRow + 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 10, 20);
         section.add(createFieldLabel(label), gbc);
 
-        // Value
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -325,7 +292,6 @@ public class EmployeeDetailsDialog extends JDialog {
         section.add(createFieldValue(value), gbc);
     }
 
-    // Helper methods for creating UI components
     private JLabel createLabelWithIcon(String icon, String text) {
         JLabel label = new JLabel(icon + " " + text);
         label.setFont(AppConstants.NORMAL_FONT);
@@ -380,11 +346,9 @@ public class EmployeeDetailsDialog extends JDialog {
         buttonPanel.setBackground(AppConstants.BACKGROUND_COLOR);
         buttonPanel.setBorder(new EmptyBorder(15, 0, 15, 0));
 
-        // Back to List button
         JButton backButton = AppUtils.createSecondaryButton("⬅ Back to List");
         backButton.addActionListener(e -> dispose());
 
-        // Edit Employee button
         JButton editButton = AppUtils.createPrimaryButton("✏️ Edit Employee");
         editButton.setBackground(AppConstants.EDIT_BUTTON_COLOR);
         editButton.addActionListener(e -> editEmployee());
@@ -395,18 +359,13 @@ public class EmployeeDetailsDialog extends JDialog {
         return buttonPanel;
     }
 
-    // Action methods
     private void editEmployee() {
-        // Use the existing EmployeeDialog.showEditDialog method
         if (com.motorph.view.dialog.EmployeeDialog.showEditDialog(
                 (JFrame) getParent(), employeeController, employee)) {
-            // Employee was successfully edited, close this details dialog
             dispose();
         }
-        // If edit was cancelled or failed, keep the details dialog open
     }
 
-    // Helper methods for data processing and formatting
     private String getValue(String value) {
         return (value != null && !value.trim().isEmpty()) ? value : "N/A";
     }

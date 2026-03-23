@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Represents a complete payroll run for a specific pay period
- */
 public class PayrollRun {
     private final String runId;
     private LocalDate startDate;
@@ -25,7 +22,6 @@ public class PayrollRun {
     private String notes;
     private String dataFile;
 
-    // Default constructor for creating new payroll runs
     public PayrollRun() {
         this.runId = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.createdAt = LocalDateTime.now();
@@ -41,34 +37,13 @@ public class PayrollRun {
         this.status = PayrollStatus.DRAFT;
     }
 
-    // Getters and setters
-    public String getRunId() {
-        return runId;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public PayrollStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PayrollStatus status) {
-        this.status = status;
-    }
-
-    public List<PaySlip> getPaySlips() {
-        return paySlips;
-    }
+    public String getRunId() { return runId; }
+    public LocalDate getStartDate() { return startDate; }
+    public LocalDate getEndDate() { return endDate; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public PayrollStatus getStatus() { return status; }
+    public void setStatus(PayrollStatus status) { this.status = status; }
+    public List<PaySlip> getPaySlips() { return paySlips; }
 
     public void setPaySlips(List<PaySlip> paySlips) {
         this.paySlips = paySlips;
@@ -77,87 +52,36 @@ public class PayrollRun {
         }
     }
 
-    public double getTotalGrossPay() {
-        return totalGrossPay;
-    }
-
-    public double getTotalNetPay() {
-        return totalNetPay;
-    }
-
-    public double getTotalDeductions() {
-        return totalDeductions;
-    }
-
-    public int getEmployeeCount() {
-        return employeeCount;
-    }
-
-    public String getProcessedBy() {
-        return processedBy;
-    }
-
-    public LocalDateTime getApprovedAt() {
-        return approvedAt;
-    }
-
-    public void setApprovedAt(LocalDateTime approvedAt) {
-        this.approvedAt = approvedAt;
-    }
-
-    public String getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+    public double getTotalGrossPay() { return totalGrossPay; }
+    public double getTotalNetPay() { return totalNetPay; }
+    public double getTotalDeductions() { return totalDeductions; }
+    public int getEmployeeCount() { return employeeCount; }
+    public String getProcessedBy() { return processedBy; }
+    public LocalDateTime getApprovedAt() { return approvedAt; }
+    public void setApprovedAt(LocalDateTime approvedAt) { this.approvedAt = approvedAt; }
+    public String getApprovedBy() { return approvedBy; }
+    public void setApprovedBy(String approvedBy) { this.approvedBy = approvedBy; }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
     public void setCreatedDate(LocalDate createdDate) {
-        // For compatibility - convert LocalDate to LocalDateTime
         this.createdAt = createdDate.atStartOfDay();
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setEmployeeCount(int employeeCount) {
-        this.employeeCount = employeeCount;
-    }
-
-    public void setDataFile(String dataFile) {
-        this.dataFile = dataFile;
-    }
-
-    public String getDataFile() {
-        return dataFile;
-    }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+    public void setEmployeeCount(int employeeCount) { this.employeeCount = employeeCount; }
+    public void setDataFile(String dataFile) { this.dataFile = dataFile; }
+    public String getDataFile() { return dataFile; }
 
     public void setApprovedDate(LocalDate approvedDate) {
         this.approvedAt = approvedDate.atStartOfDay();
     }
 
     public void setPostedDate(LocalDate postedDate) {
-        // Add postedAt field if needed for tracking
         this.notes = (this.notes != null ? this.notes + "; " : "") + "Posted on: " + postedDate;
     }
 
-    /**
-     * Calculate totals from payslips
-     */
     private void calculateTotals() {
         if (paySlips == null || paySlips.isEmpty()) {
             totalGrossPay = 0;
@@ -173,9 +97,6 @@ public class PayrollRun {
         employeeCount = paySlips.size();
     }
 
-    /**
-     * Get formatted pay period string
-     */
     public String getPayPeriodString() {
         return startDate.toString() + " to " + endDate.toString();
     }
