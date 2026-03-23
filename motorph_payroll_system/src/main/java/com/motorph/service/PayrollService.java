@@ -8,7 +8,7 @@ import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 import com.motorph.model.PaySlip;
 
-public class PayrollService {
+public class PayrollService implements PayrollServiceInterface {
 
     private final List<Employee> employees;
     private final List<AttendanceRecord> attendanceRecords;
