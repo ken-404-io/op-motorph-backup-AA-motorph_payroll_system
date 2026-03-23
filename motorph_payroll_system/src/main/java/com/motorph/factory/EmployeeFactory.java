@@ -38,12 +38,14 @@ public class EmployeeFactory {
             double clothingAllowance,
             double grossSemiMonthlyRate
     ) {
-        // POLYMORPHISM: The factory decides which subclass to instantiate
+        // POLYMORPHISM: The factory decides which subclass to instantiate.
+        // Both types receive the full set of fields so no data is lost.
         if ("Contractual".equalsIgnoreCase(status)) {
             return new ContractualEmployee(
-                    employeeId, lastName, firstName,
-                    position, status, basicSalary,
-                    riceSubsidy, phoneAllowance, clothingAllowance
+                    employeeId, lastName, firstName, birthday, address, phoneNumber,
+                    sssNumber, philhealthNumber, tinNumber, pagibigNumber,
+                    status, position, supervisor, basicSalary, riceSubsidy,
+                    phoneAllowance, clothingAllowance, grossSemiMonthlyRate
             );
         } else {
             // Default to RegularEmployee for "Regular" or any other status

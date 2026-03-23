@@ -14,7 +14,7 @@ import com.motorph.model.Employee;
 /**
  * Service for employee-related operations.
  */
-public class EmployeeService {
+public class EmployeeService implements EmployeeServiceInterface {
     private final List<Employee> employees;
     private final List<AttendanceRecord> attendanceRecords;
     private final String csvFilePath;

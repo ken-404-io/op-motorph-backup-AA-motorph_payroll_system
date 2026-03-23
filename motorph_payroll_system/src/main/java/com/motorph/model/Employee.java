@@ -52,17 +52,37 @@ public abstract class Employee {
         this.employeeId = employeeId;
         this.lastName = lastName;
         this.firstName = firstName;
+        this.birthday = birthday;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.sssNumber = sssNumber;
+        this.philhealthNumber = philhealthNumber;
+        this.tinNumber = tinNumber;
+        this.pagibigNumber = pagibigNumber;
+        this.status = status;
+        this.position = position;
+        this.supervisor = supervisor;
+        this.basicSalary = basicSalary;
+        this.riceSubsidy = riceSubsidy;
+        this.phoneAllowance = phoneAllowance;
+        this.clothingAllowance = clothingAllowance;
+        this.grossSemiMonthlyRate = grossSemiMonthlyRate;
+        calculateHourlyRate();
+    }
+
+    public Employee(int employeeId, String lastName, String firstName, String position,
+                    String status, double basicSalary, double riceSubsidy,
+                    double phoneAllowance, double clothingAllowance) {
+        this.employeeId = employeeId;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.position = position;
         this.status = status;
         this.basicSalary = basicSalary;
         this.riceSubsidy = riceSubsidy;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
-
         calculateHourlyRate();
-    }
-
-    public Employee(int employeeId, String lastName, String firstName, String position, String status, double basicSalary, double riceSubsidy, double phoneAllowance, double clothingAllowance) {
     }
 
     // =========================
