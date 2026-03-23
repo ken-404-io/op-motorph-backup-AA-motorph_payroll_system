@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import com.motorph.model.Employee;
+import com.motorph.model.RegularEmployee;
 
 /**
  * Manual CSV test without external dependencies
@@ -22,7 +23,7 @@ public class ManualCSVTest {
             String csvFilePath = "c:\\Users\\ADMIN\\Desktop\\developerFiles\\CP2_GROUP-4\\motorph_payroll_system\\manual_test.csv";
 
             // Create a test employee
-            Employee testEmployee = new Employee(
+            Employee testEmployee = new RegularEmployee(
                     99999, // Employee ID
                     "TestLastName", // Last Name
                     "TestFirstName", // First Name

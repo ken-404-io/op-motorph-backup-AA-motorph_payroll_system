@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import com.opencsv.CSVWriter;
 import com.motorph.model.Employee;
+import com.motorph.model.RegularEmployee;
 
 /**
  * CSV utility for creating and writing employee data to CSV files.
@@ -58,8 +59,8 @@ public class CSVCreateAndWrite {
                 double phoneAllowance = getValidDoubleInput(scanner, "Enter Phone Allowance: ");
                 double clothingAllowance = getValidDoubleInput(scanner, "Enter Clothing Allowance: ");
                 
-                Employee employee = new Employee(employeeId, lastName, firstName, position, 
-                                               status, basicSalary, riceSubsidy, 
+                Employee employee = new RegularEmployee(employeeId, lastName, firstName, position,
+                                               status, basicSalary, riceSubsidy,
                                                phoneAllowance, clothingAllowance);
                 employees.add(employee);
                 
