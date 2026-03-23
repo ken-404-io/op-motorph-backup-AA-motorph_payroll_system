@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.motorph.model.Employee;
+import com.motorph.model.RegularEmployee;
 import com.motorph.repository.DataRepository;
 import com.motorph.service.EmployeeService;
 
@@ -32,7 +33,7 @@ public class CSVWriteTest {
                     employeesPath);
 
             // Create a test employee
-            Employee testEmployee = new Employee(
+            Employee testEmployee = new RegularEmployee(
                     99998, // Employee ID
                     "TestLastName", // Last Name
                     "TestFirstName", // First Name

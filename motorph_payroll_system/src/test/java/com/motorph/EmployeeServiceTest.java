@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
+import com.motorph.model.RegularEmployee;
 import com.motorph.service.EmployeeService;
 
 /**
@@ -22,7 +24,7 @@ public class EmployeeServiceTest {
 
             // Create initial employee list
             List<Employee> employees = new ArrayList<>();
-            Employee existingEmployee = new Employee(
+            Employee existingEmployee = new RegularEmployee(
                     1, "Dela Cruz", "Juan", LocalDate.of(1990, 1, 1),
                     "123 Main St", "123-456-7890", "11-1111111-1",
                     "111111111111", "111-111-111-000", "111111111111",
@@ -30,7 +32,7 @@ public class EmployeeServiceTest {
             employees.add(existingEmployee);
 
             // Create empty attendance list
-            List<Object> attendanceRecords = new ArrayList<>();
+            List<AttendanceRecord> attendanceRecords = new ArrayList<>();
 
             // Create EmployeeService
             EmployeeService employeeService = new EmployeeService(
@@ -54,7 +56,7 @@ public class EmployeeServiceTest {
             }
 
             // Create a test employee
-            Employee testEmployee = new Employee(
+            Employee testEmployee = new RegularEmployee(
                     99999, // Employee ID
                     "TestLastName", // Last Name
                     "TestFirstName", // First Name

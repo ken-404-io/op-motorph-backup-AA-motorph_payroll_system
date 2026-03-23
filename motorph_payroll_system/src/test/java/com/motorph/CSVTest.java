@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.motorph.model.Employee;
+import com.motorph.model.RegularEmployee;
 import com.opencsv.CSVWriter;
 
 /**
@@ -18,8 +19,8 @@ public class CSVTest {
 
         // Create sample employees
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(99001, "Test", "John", "Software Developer", "Regular", 45000, 1500, 1000, 1000));
-        employees.add(new Employee(99002, "Demo", "Jane", "HR Manager", "Regular", 50000, 1500, 1000, 1000));
+        employees.add(new RegularEmployee(99001, "Test", "John", "Software Developer", "Regular", 45000, 1500, 1000, 1000));
+        employees.add(new RegularEmployee(99002, "Demo", "Jane", "HR Manager", "Regular", 50000, 1500, 1000, 1000));
 
         // Write to CSV file
         String csvFile = "test_employees.csv";
