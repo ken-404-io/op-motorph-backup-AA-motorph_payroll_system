@@ -1,10 +1,6 @@
 package com.motorph.model;
 
-/**
- * INHERITANCE: Abstract base class for all deductions.
- * Provides common functionality shared by all deduction types.
- * Subclasses must implement the calculate() method with their own logic.
- */
+// Inheritance
 public abstract class BaseDeduction implements Deduction {
 
     private final String deductionName;

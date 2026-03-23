@@ -15,9 +15,6 @@ import javax.swing.JTextField;
 import com.motorph.util.AppConstants;
 import com.motorph.util.AppUtils;
 
-/**
- * Dialog for entering employee number with validation.
- */
 public class EmployeeNumberInputDialog extends JDialog {
     private JTextField employeeNumberField;
     private int employeeNumber = -1;
@@ -31,12 +28,10 @@ public class EmployeeNumberInputDialog extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
-        // Main panel
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(AppConstants.BACKGROUND_COLOR);
 
-        // Input panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         inputPanel.setBackground(AppConstants.BACKGROUND_COLOR);
 
@@ -48,14 +43,12 @@ public class EmployeeNumberInputDialog extends JDialog {
         inputPanel.add(label);
         inputPanel.add(employeeNumberField);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(AppConstants.BACKGROUND_COLOR);
 
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
 
-        // Style buttons
         okButton.setBackground(AppConstants.BUTTON_COLOR);
         okButton.setFont(AppConstants.NORMAL_FONT);
         cancelButton.setBackground(AppConstants.BUTTON_COLOR);
@@ -63,12 +56,10 @@ public class EmployeeNumberInputDialog extends JDialog {
 
         okButton.addActionListener(e -> {
             try {
-                // Validate employee number
                 this.employeeNumber = AppUtils.validateEmployeeNumber(employeeNumberField.getText());
                 this.confirmed = true;
                 dispose();
             } catch (IllegalArgumentException ex) {
-                // Display validation error
                 JOptionPane.showMessageDialog(
                         this,
                         ex.getMessage(),
@@ -85,35 +76,17 @@ public class EmployeeNumberInputDialog extends JDialog {
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
 
-        // Add panels
         mainPanel.add(inputPanel, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         add(mainPanel, BorderLayout.CENTER);
 
-        // Set dialog properties
         pack();
         setResizable(false);
         setLocationRelativeTo(getParent());
 
-        // Set default button
         getRootPane().setDefaultButton(okButton);
     }
 
-    /**
-     * Get the entered employee number if confirmed
-     * 
-     * @return Employee number or -1 if canceled
-     */
-    public int getEmployeeNumber() {
-        return confirmed ? employeeNumber : -1;
-    }
-
-    /**
-     * Check if user confirmed the dialog
-     * 
-     * @return true if confirmed, false if canceled
-     */
-    public boolean isConfirmed() {
-        return confirmed;
-    }
+    public int getEmployeeNumber() { return confirmed ? employeeNumber : -1; }
+    public boolean isConfirmed() { return confirmed; }
 }

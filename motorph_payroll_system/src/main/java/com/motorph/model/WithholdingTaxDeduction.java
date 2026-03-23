@@ -1,21 +1,12 @@
 package com.motorph.model;
 
-/**
- * INHERITANCE: Extends BaseDeduction.
- * POLYMORPHISM: Implements calculate() using Philippine tax brackets.
- * This is the most complex deduction - uses progressive tax rates.
- */
+// Inheritance + Polymorphism
 public class WithholdingTaxDeduction extends BaseDeduction {
 
     public WithholdingTaxDeduction() {
         super("Withholding Tax");
     }
 
-    /**
-     * NOTE: This deduction is special - it must be calculated on taxable income
-     * (grossPay minus other deductions), not on grossPay directly.
-     * The PayrollProcessor handles passing the correct taxable income.
-     */
     @Override
     public double calculate(double taxableIncome) {
         final double BRACKET_1 = 20833.00;

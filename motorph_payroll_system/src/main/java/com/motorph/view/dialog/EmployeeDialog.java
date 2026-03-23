@@ -19,20 +19,13 @@ import com.motorph.model.RegularEmployee;
 import com.motorph.util.AppConstants;
 import com.motorph.util.AppUtils;
 
-/**
- * Universal employee dialog for both adding new employees and editing existing
- * ones.
- * Consolidated from NewEmployeeDialog and EditEmployeeDialog for better
- * maintainability.
- */
 public class EmployeeDialog extends JDialog {
 
     private final EmployeeController employeeController;
-    private final Employee existingEmployee; // null for new employee
+    private final Employee existingEmployee;
     private final boolean isEditMode;
     private boolean operationSuccessful = false;
 
-    // Form fields
     private JTextField employeeIdField;
     private JTextField lastNameField;
     private JTextField firstNameField;
@@ -51,16 +44,10 @@ public class EmployeeDialog extends JDialog {
     private JTextField phoneAllowanceField;
     private JTextField clothingAllowanceField;
 
-    /**
-     * Constructor for adding new employee
-     */
     public EmployeeDialog(JFrame parent, EmployeeController employeeController) {
         this(parent, employeeController, null);
     }
 
-    /**
-     * Constructor for editing existing employee
-     */
     public EmployeeDialog(JFrame parent, EmployeeController employeeController, Employee employee) {
         super(parent, employee == null ? "Add New Employee" : "Edit Employee", true);
         this.employeeController = employeeController;
@@ -82,15 +69,12 @@ public class EmployeeDialog extends JDialog {
     }
 
     private void setupComponents() {
-        // Main panel with padding
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Form panel
         JPanel formPanel = createFormPanel();
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = createButtonPanel();
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -100,13 +84,12 @@ public class EmployeeDialog extends JDialog {
     private JPanel createFormPanel() {
         JPanel formPanel = new JPanel(new BorderLayout());
 
-        // Basic Information Panel
         JPanel basicInfoPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         basicInfoPanel.setBorder(new TitledBorder("Basic Information"));
 
         basicInfoPanel.add(new JLabel("Employee ID:"));
         employeeIdField = new JTextField();
-        employeeIdField.setEnabled(!isEditMode); // Disable for edit mode
+        employeeIdField.setEnabled(!isEditMode);
         basicInfoPanel.add(employeeIdField);
 
         basicInfoPanel.add(new JLabel("Last Name:"));
@@ -129,7 +112,6 @@ public class EmployeeDialog extends JDialog {
         phoneField = new JTextField();
         basicInfoPanel.add(phoneField);
 
-        // Government IDs Panel
         JPanel idsPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         idsPanel.setBorder(new TitledBorder("Government IDs"));
 
@@ -149,7 +131,6 @@ public class EmployeeDialog extends JDialog {
         pagibigField = new JTextField();
         idsPanel.add(pagibigField);
 
-        // Employment Details Panel
         JPanel employmentPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         employmentPanel.setBorder(new TitledBorder("Employment Details"));
 
@@ -165,7 +146,6 @@ public class EmployeeDialog extends JDialog {
         supervisorField = new JTextField();
         employmentPanel.add(supervisorField);
 
-        // Compensation Panel
         JPanel compensationPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         compensationPanel.setBorder(new TitledBorder("Compensation"));
 
@@ -185,7 +165,6 @@ public class EmployeeDialog extends JDialog {
         clothingAllowanceField = new JTextField();
         compensationPanel.add(clothingAllowanceField);
 
-        // Combine all panels
         JPanel combinedPanel = new JPanel(new BorderLayout(0, 15));
         combinedPanel.add(basicInfoPanel, BorderLayout.NORTH);
 
@@ -245,7 +224,6 @@ public class EmployeeDialog extends JDialog {
 
     private void saveEmployee() {
         try {
-            // Validate and collect form data
             int employeeId = AppUtils.validateEmployeeNumber(employeeIdField.getText());
             String lastName = AppUtils.validateName(lastNameField.getText(), "Last Name");
             String firstName = AppUtils.validateName(firstNameField.getText(), "First Name");
@@ -270,14 +248,12 @@ public class EmployeeDialog extends JDialog {
             double phoneAllowance = AppUtils.validateSalary(phoneAllowanceField.getText(), "Phone Allowance");
             double clothingAllowance = AppUtils.validateSalary(clothingAllowanceField.getText(), "Clothing Allowance");
 
-            // Create employee
             Employee employee = new RegularEmployee(
                     employeeId, lastName, firstName, birthday, address, phone,
                     sss, philhealth, tin, pagibig, status, position, supervisor,
                     basicSalary, riceSubsidy, phoneAllowance, clothingAllowance, 0.0
             );
 
-            // Save to database
             boolean success;
             if (isEditMode) {
                 success = employeeController.updateEmployee(employee);
@@ -306,25 +282,14 @@ public class EmployeeDialog extends JDialog {
         }
     }
 
-    /**
-     * Check if the operation (add/edit) was successful
-     */
-    public boolean isOperationSuccessful() {
-        return operationSuccessful;
-    }
+    public boolean isOperationSuccessful() { return operationSuccessful; }
 
-    /**
-     * Show dialog for adding new employee
-     */
     public static boolean showAddDialog(JFrame parent, EmployeeController employeeController) {
         EmployeeDialog dialog = new EmployeeDialog(parent, employeeController);
         dialog.setVisible(true);
         return dialog.isOperationSuccessful();
     }
 
-    /**
-     * Show dialog for editing existing employee
-     */
     public static boolean showEditDialog(JFrame parent, EmployeeController employeeController, Employee employee) {
         EmployeeDialog dialog = new EmployeeDialog(parent, employeeController, employee);
         dialog.setVisible(true);

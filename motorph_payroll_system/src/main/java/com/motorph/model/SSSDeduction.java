@@ -3,11 +3,7 @@ package com.motorph.model;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * INHERITANCE: Extends BaseDeduction.
- * POLYMORPHISM: Implements calculate() differently from other deductions.
- * SSS uses a bracket-based lookup table.
- */
+// Inheritance + Polymorphism
 public class SSSDeduction extends BaseDeduction {
 
     private final Map<Double, Double> sssTable;

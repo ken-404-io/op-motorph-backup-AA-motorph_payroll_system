@@ -6,10 +6,7 @@ import java.util.List;
 import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 
-/**
- * ABSTRACTION: Defines the contract for employee-related operations.
- * Any implementation must provide these methods, hiding internal details.
- */
+// Abstraction
 public interface EmployeeServiceInterface {
     Employee findEmployeeById(int employeeId);
     List<Employee> searchEmployees(String searchTerm);

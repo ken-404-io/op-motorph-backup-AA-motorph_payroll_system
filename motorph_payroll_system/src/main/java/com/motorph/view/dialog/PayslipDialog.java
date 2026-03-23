@@ -16,9 +16,6 @@ import com.motorph.model.PaySlip;
 import com.motorph.util.AppConstants;
 import com.motorph.util.AppUtils;
 
-/**
- * Dialog for displaying an employee's payslip.
- */
 public class PayslipDialog extends JDialog {
 
     public PayslipDialog(JFrame parent, PaySlip paySlip, String title) {
@@ -27,12 +24,10 @@ public class PayslipDialog extends JDialog {
     }
 
     private void initComponents(PaySlip paySlip) {
-        // Create text area for payslip details
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
-        // Format the payslip details
         StringBuilder payslipDetails = new StringBuilder();
         payslipDetails.append("═══════════════════════════════════════════\n");
         payslipDetails.append("           EMPLOYEE PAYSLIP\n");
@@ -70,14 +65,11 @@ public class PayslipDialog extends JDialog {
 
         textArea.setText(payslipDetails.toString());
 
-        // Add to a scroll pane
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 500));
 
-        // Add the scroll pane to the dialog
         getContentPane().add(scrollPane);
 
-        // Add close button at the bottom
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton closeButton = new JButton("Close");
         closeButton.setFont(AppConstants.NORMAL_FONT);
@@ -86,7 +78,6 @@ public class PayslipDialog extends JDialog {
         buttonPanel.add(closeButton);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        // Set dialog properties
         pack();
         setLocationRelativeTo(getParent());
     }

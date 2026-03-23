@@ -7,10 +7,6 @@ import com.motorph.model.AttendanceRecord;
 import com.motorph.model.Employee;
 import com.motorph.service.EmployeeServiceInterface;
 
-/**
- * Controller for employee-related operations.
- * Depends on the EmployeeServiceInterface, not the concrete class (OOP abstraction).
- */
 public class EmployeeController {
 
     private final EmployeeServiceInterface employeeService;
@@ -19,13 +15,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    /**
-     * Find an employee by ID
-     * 
-     * @param employeeId The employee ID to find
-     * @return Employee or null if not found
-     * @throws IllegalArgumentException if employee ID is invalid
-     */
     public Employee findEmployeeById(int employeeId) throws IllegalArgumentException {
         if (employeeId <= 0) {
             throw new IllegalArgumentException("Invalid employee ID");
@@ -39,12 +28,6 @@ public class EmployeeController {
         return employee;
     }
 
-    /**
-     * Search for employees by name or ID
-     * 
-     * @param searchTerm The search term (name or ID)
-     * @return List of matching employees
-     */
     public List<Employee> searchEmployees(String searchTerm) {
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
             throw new IllegalArgumentException("Search term cannot be empty");
@@ -53,23 +36,10 @@ public class EmployeeController {
         return employeeService.searchEmployees(searchTerm);
     }
 
-    /**
-     * Get all employees
-     * 
-     * @return List of all employees
-     */
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
-    /**
-     * Add a new employee to the system and save to CSV
-     * 
-     * @param employee The employee to add
-     * @return true if employee was added successfully, false if employee ID already
-     *         exists
-     * @throws IllegalArgumentException if employee data is invalid
-     */
     public boolean addEmployee(Employee employee) throws IllegalArgumentException {
         if (employee == null) {
             throw new IllegalArgumentException("Employee cannot be null");
@@ -97,14 +67,6 @@ public class EmployeeController {
         return employeeService.addEmployee(employee);
     }
 
-    /**
-     * Update an existing employee in the system and save to CSV
-     * 
-     * @param employee The employee with updated information
-     * @return true if employee was updated successfully, false if employee ID
-     *         doesn't exist
-     * @throws IllegalArgumentException if employee data is invalid
-     */
     public boolean updateEmployee(Employee employee) throws IllegalArgumentException {
         if (employee == null) {
             throw new IllegalArgumentException("Employee cannot be null");
@@ -133,14 +95,6 @@ public class EmployeeController {
         return employeeService.updateEmployee(employee);
     }
 
-    /**
-     * Delete an employee from the system and update CSV
-     * 
-     * @param employeeId The ID of the employee to delete
-     * @return true if employee was deleted successfully, false if employee ID
-     *         doesn't exist
-     * @throws IllegalArgumentException if employee ID is invalid
-     */
     public boolean deleteEmployee(int employeeId) throws IllegalArgumentException {
         if (employeeId <= 0) {
             throw new IllegalArgumentException("Invalid employee ID");
@@ -149,15 +103,6 @@ public class EmployeeController {
         return employeeService.deleteEmployee(employeeId);
     }
 
-    /**
-     * Get attendance records for an employee within a date range
-     * 
-     * @param employeeId The employee ID
-     * @param startDate  Start date for the range
-     * @param endDate    End date for the range
-     * @return List of matching attendance records
-     * @throws IllegalArgumentException if parameters are invalid
-     */
     public List<AttendanceRecord> getAttendanceRecords(int employeeId, LocalDate startDate, LocalDate endDate)
             throws IllegalArgumentException {
         if (employeeId <= 0) {
@@ -175,32 +120,14 @@ public class EmployeeController {
         return employeeService.getAttendanceRecords(employeeId, startDate, endDate);
     }
 
-    /**
-     * Get all attendance records
-     * 
-     * @return List of all attendance records
-     */
     public List<AttendanceRecord> getAllAttendanceRecords() {
         return employeeService.getAllAttendanceRecords();
     }
 
-    /**
-     * Get attendance records for a specific date
-     * 
-     * @param date The date to filter by
-     * @return List of attendance records for the specified date
-     */
     public List<AttendanceRecord> getAttendanceRecordsForDate(LocalDate date) {
         return employeeService.getAttendanceRecordsForDate(date);
     }
 
-    /**
-     * Get attendance records within a date range
-     * 
-     * @param startDate Start date
-     * @param endDate   End date
-     * @return List of attendance records within the range
-     */
     public List<AttendanceRecord> getAttendanceRecordsInRange(LocalDate startDate, LocalDate endDate) {
         return employeeService.getAttendanceRecordsInRange(startDate, endDate);
     }
