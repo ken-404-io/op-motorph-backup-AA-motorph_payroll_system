@@ -7,3 +7,4 @@ package com.motorph.model;
 public interface Deduction {
     double calculate(double grossPay);
     String getDeductionName();
+}

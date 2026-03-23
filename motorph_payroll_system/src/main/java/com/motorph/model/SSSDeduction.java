@@ -68,3 +68,4 @@ public class SSSDeduction extends BaseDeduction {
         table.put(Double.MAX_VALUE, 945.0);
         return table;
     }
+}
